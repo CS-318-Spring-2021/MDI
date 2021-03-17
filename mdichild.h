@@ -68,6 +68,8 @@ public:
     QString userFriendlyCurrentFile();
     QString currentFile() { return curFile; }
 
+    void bold(bool boldState);
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

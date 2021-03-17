@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     QCoreApplication::setApplicationName("MDI Example");
-    QCoreApplication::setOrganizationName("QtProject");
+    QCoreApplication::setOrganizationName("FJS Systems");
     QCoreApplication::setApplicationVersion(QT_VERSION_STR);
     QCommandLineParser parser;
     parser.setApplicationDescription("Qt MDI Example");

@@ -58,6 +58,12 @@ MdiChild::MdiChild()
     isUntitled = true;
 }
 
+void MdiChild::bold(bool boldState) { // !!!
+    QTextCharFormat charFormatModifier; charFormatModifier.setFontWeight(boldState ? QFont::Bold : QFont::Normal);
+    textCursor().mergeCharFormat(charFormatModifier);
+    mergeCurrentCharFormat(charFormatModifier);
+}
+
 void MdiChild::newFile()
 {
     static int sequenceNumber = 1;

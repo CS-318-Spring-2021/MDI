@@ -72,6 +72,7 @@ MainWindow::MainWindow()
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     mdiArea->closeAllSubWindows();
@@ -81,6 +82,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
         writeSettings();
         event->accept();
     }
+}
+
+void MainWindow::updateFontActions() { // !!!
+    if (activeMdiChild()) {
+        boldAct->setEnabled(true);
+        boldAct->setChecked(activeMdiChild()->currentCharFormat().fontWeight()==QFont::Bold);
+    } else
+        boldAct->setEnabled(false);
 }
 
 void MainWindow::newFile()
@@ -226,6 +235,12 @@ void MainWindow::copy()
         activeMdiChild()->copy();
 }
 
+void MainWindow::bold() {  // !!!
+    if (activeMdiChild()) {
+        activeMdiChild()->bold(boldAct->isChecked());
+    }
+}
+
 void MainWindow::paste()
 {
     if (activeMdiChild())
@@ -262,6 +277,8 @@ void MainWindow::updateMenus()
     cutAct->setEnabled(hasSelection);
     copyAct->setEnabled(hasSelection);
 #endif
+
+    updateFontActions();  // !!!
 }
 
 void MainWindow::updateWindowMenu()
@@ -309,6 +326,9 @@ MdiChild *MainWindow::createMdiChild()
     connect(child, &QTextEdit::copyAvailable, cutAct, &QAction::setEnabled);
     connect(child, &QTextEdit::copyAvailable, copyAct, &QAction::setEnabled);
 #endif
+
+    connect(child, &QTextEdit::currentCharFormatChanged, this, &MainWindow::updateFontActions);
+    updateFontActions();
 
     return child;
 }
@@ -406,6 +426,21 @@ void MainWindow::createActions()
     editMenu->addAction(pasteAct);
     editToolBar->addAction(pasteAct);
 #endif
+
+    //===== Font actions!!!
+    QMenu *fontMenu = menuBar()->addMenu(tr("F&ont"));
+    QToolBar *fontToolBar = addToolBar(tr("Font"));
+
+    const QIcon boldIcon = QIcon::fromTheme("font-bold", QIcon(":/images/bold.png"));
+    boldAct = new QAction(boldIcon, tr("&Bold"), this);
+    boldAct->setCheckable(true);
+    boldAct->setShortcut(QKeySequence(tr("Ctrl+B")));
+    boldAct->setStatusTip(tr("Toggle bold font"));
+
+    connect(boldAct, &QAction::triggered, this, &MainWindow::bold);
+    fontMenu->addAction(boldAct);
+    fontToolBar->addAction(boldAct);
+    //=====
 
     windowMenu = menuBar()->addMenu(tr("&Window"));
     connect(windowMenu, &QMenu::aboutToShow, this, &MainWindow::updateWindowMenu);

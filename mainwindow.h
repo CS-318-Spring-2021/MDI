@@ -85,11 +85,13 @@ private slots:
     void copy();
     void paste();
 #endif
+    void bold();
     void about();
     void updateMenus();
     void updateWindowMenu();
     MdiChild *createMdiChild();
     void switchLayoutDirection();
+    void updateFontActions();
 
 private:
     enum { MaxRecentFiles = 5 };
@@ -119,6 +121,7 @@ private:
     QAction *copyAct;
     QAction *pasteAct;
 #endif
+    QAction *boldAct;
     QAction *closeAct;
     QAction *closeAllAct;
     QAction *tileAct;

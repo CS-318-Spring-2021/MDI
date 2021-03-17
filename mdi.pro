@@ -9,5 +9,5 @@ SOURCES       = main.cpp \
 RESOURCES     = mdi.qrc
 
 # install
-target.path = $$[QT_INSTALL_EXAMPLES]/widgets/mainwindows/mdi
+target.path = ./
 INSTALLS += target
